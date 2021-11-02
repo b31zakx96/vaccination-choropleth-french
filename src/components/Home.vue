@@ -224,6 +224,7 @@ export default {
   },
 
   mounted() {
+    console.log('hello from mounted');
     this.onResize();
     window.addEventListener("resize", this.onResize, { passive: true });
   },

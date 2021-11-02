@@ -20,7 +20,7 @@ npm run build
 
 ### Live preview
 
-See [La Carte choroplèthe](https://vaxmapfrench.herokuapp.com/).
+See [Carte choroplèthe de vaccination en France](https://vaxmapfrench.herokuapp.com/).
 
 ### Customize configuration
 

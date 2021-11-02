@@ -238,10 +238,6 @@ export default {
 
         this.$nextTick(() => {
 
-            //console.log(this.frCentresVax);
-            //var southWest = L.latLng(42.098222, -6.174316);
-            //var northEast = L.latLng(51.781436, 11.096191);
-            //this.bounds = L.latLngBounds(southWest, northEast);
             this.resetView();
 
         });

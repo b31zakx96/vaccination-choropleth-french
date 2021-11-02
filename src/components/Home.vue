@@ -1,7 +1,6 @@
 <template>
   <v-app>
 
-
     <v-app-bar
       app
       :color="color"

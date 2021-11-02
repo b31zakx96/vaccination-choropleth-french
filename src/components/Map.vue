@@ -4,7 +4,6 @@
             <l-map ref="mymap" :center="[46.71109, 1.7191036]" :zoom="6" :minZoom="6" :options="mapOptions" >
                 
                 <l-control-scale position="bottomleft" :imperial="true" :metric="true"></l-control-scale>
-                <!-- <l-control-layers class="control-layers" position="bottomright" ></l-control-layers> -->
                 
                 <l-tile-layer
                     v-for="tileProvider in tileProviders"

@@ -299,17 +299,10 @@ export default {
   data: () => ({
     fab: null,
   }),
-  created:{
-    toTop() {
-      this.$vuetify.goTo(0);
-    }
-  },
   methods:{
-
     goHome(){
       this.$router.push('/')
     },
-
     onScroll(e) {
       if (typeof window === "undefined") return;
       const top = window.pageYOffset || e.target.scrollTop || 0;
@@ -318,7 +311,6 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     }
-
   }
 
 };

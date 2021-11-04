@@ -7,7 +7,7 @@ Voir  [Carte choroplèthe de vaccination en France](https://vaxmapfrench.herokua
 
 
 ## Project setup
-Afin de reutiliser le programme dans votre machine, il souffit d'avoir installé dans ton machine au préalable npm
+//Afin de reutiliser le programme dans votre propre machine, il souffit d'avoir installé au préalable node js
 ```
 npm install
 ```

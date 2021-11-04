@@ -23,7 +23,7 @@
           <span class="mr-2">Accueil</span>
         </v-btn>
         <v-btn text @click="$vuetify.goTo('#methodo')">
-          <span class="mr-2">Méthodology</span>
+          <span class="mr-2">Méthodologie</span>
         </v-btn>
         <v-btn rounded outlined text @click="$vuetify.goTo('#mymap')">
           <span class="mr-2">Carte</span>

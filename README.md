@@ -1,5 +1,5 @@
 # Pourcentage & Centres de vaccination en France
-Carte choroplèthe interactive de l’état de vaccination contre Covid-19 par région et département et de la géolocalisation des centres de vaccination en France.
+Carte choroplèthe interactive de l’état de vaccination contre Covid-19 par région et département et de la géolocalisation des centres de vaccination à l'aide du code postal en France.
 
 ## Live preview
 

@@ -1,10 +1,12 @@
+//importer tous les packages que nous avons utilisés dans l'application 
+
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 
-//import vue-router
+//importer vue-router pour faire les routes entre nos page
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 

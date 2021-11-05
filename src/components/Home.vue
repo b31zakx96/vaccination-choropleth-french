@@ -1,6 +1,7 @@
 <template>
   <v-app>
 
+    <!-- ajouter une barre de navigation entre les sections -->
     <v-app-bar
       app
       :color="color"
@@ -34,7 +35,7 @@
 
     <v-main class="pt-0">
 
-
+      <!-- ajouter la section de contexte --> 
       <section id="home">
           <v-parallax dark src="@/assets/img/main.jpg" height="850">
             <v-row align="center" justify="center">
@@ -69,7 +70,7 @@
         </section>
 
 
-
+        <!-- ajouter la section de la méthodologie --> 
         <section id="methodo">
           <br><br><br><br><br><br>
           <v-row align="center" justify="center">
@@ -120,7 +121,7 @@
         </section>
 
 
-
+      <!-- ajouter la section de la carte --> 
       <section id="mymap">
         <v-container fluid>
           <v-row align="center" justify="center">
@@ -154,7 +155,7 @@
 
     </v-main>
 
-
+    <!-- ajouter un bouton pour revenir en haut de la page d'acueil --> 
     <v-scale-transition>
       <v-btn
         fab
@@ -169,7 +170,7 @@
       </v-btn>
     </v-scale-transition>
 
-
+    <!-- ajouter le pied de page -->
     <v-footer dark padless>
       <v-card flat tile class="secondary white--text text-center">
         <v-card-text class="white--text">
@@ -223,7 +224,6 @@ export default {
   },
 
   mounted() {
-    console.log('hello from mounted');
     this.onResize();
     window.addEventListener("resize", this.onResize, { passive: true });
   },
@@ -270,7 +270,7 @@ export default {
 </script>
 
 
-
+<!-- Définition de l'ensemble des styles-->
 <style scoped>
 .v-main {
   background-image: url("~@/assets/img/bgMain.png");

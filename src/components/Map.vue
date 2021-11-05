@@ -1,10 +1,14 @@
 <template>
+<!-- difinir une zone sur l'écran pour placer la carte -->
         <div class="map">  
 
+            <!-- initialisation de la carte et définition des coordonnées et du zoom de lancement -->
             <l-map ref="mymap" :center="[46.71109, 1.7191036]" :zoom="6" :minZoom="6" :options="mapOptions" >
-                
+
+                <!-- ajouter l'echelle sur la carte -->
                 <l-control-scale position="bottomleft" :imperial="true" :metric="true"></l-control-scale>
-                
+
+                <!-- Ajouter le fond de carte (les tuiles openstreetmap) -->
                 <l-tile-layer
                     v-for="tileProvider in tileProviders"
                     :key="tileProvider.name"
@@ -14,19 +18,26 @@
                     :attribution="tileProvider.attribution"
                 layer-type="base"/>
 
+                <!-- Ajouter la composante choroplethe pour la configuration: Appel des fichiers js & json (data: le fichier contient les données relative au covid, geojson: contient la geometrie) , définition de leur fonctionnalité, de leur style -->
                 <l-choropleth-layer v-if="checkedChorop == true" :data="getData()" titleKey="name" idKey="id" :value="value" :extraValues="extraValues" geojsonIdKey="code" :geojson="getGeojson()" :colorScale="colorScale" :currentStrokeColor="currentStrokeColor">
                     <template slot-scope="props">
+
+                    <!-- Création de l'infobulle "Pourcentage de la population vaccinée" et paramétrage des informations-->
                     <l-info-control :item="props.currentItem" :unit="props.unit" title="Pourcentage de la population vaccinée" :placeholder="placeholderchoro" position="bottomright"/>
+                    
+                    <!-- Création de l'onglet "Vaccination Statistics" basé sur la composant control -->
                     <l-reference-chart title="Vaccination Statistics" :colorScale="colorScale" :min="props.min" :max="props.max" position="topleft"/>
                     </template>
                 </l-choropleth-layer>
 
+                <!-- ajouter les marqueurs sur la carte --> 
                 <l-marker   
                     :key="index" 
                     v-for="(vaxMarker, index) in vaxMarkers" 
                     :lat-lng="vaxMarker"
                     @click="setInfoMarker(vaxMarker)">
 
+                    <!-- Ajouter popup pour la couche des marqueurs lorsque on click -->
                     <l-popup >  
                         <p class="text-center"> <strong>{{infoMarker.c_nom}}</strong> </p>
                     </l-popup>
@@ -34,7 +45,8 @@
                 </l-marker>
 
             </l-map>
-
+                
+            <!-- creation d'un panneau latérale (sidebar) à travers lequel nous contrôlons la carte et  il contiendra des informations sur le centres -->
             <b-sidebar width="380px" v-model="active" id="sidebar-no-header"  title="COVID-19 l Vaccination Infos" shadow>
                 <div class="p-3">
                     <p><b>Sélectionnez une option pour l'affichage de choroplèthe :</b></p> 
@@ -43,13 +55,16 @@
                         cols="12"
                         sm="12"
                     >
+                    <!--Créer un sélecteur pour choisir l'affichage de choroplethe soit par région soit par département  -->
                     <b-form-select v-model="selected" :options="options"></b-form-select>
                     </v-col><br>
 
+                    <!-- creation d'un checkbox pour masquer ou afficher la choroplethe -->
                     <b-form-checkbox v-model="checkedChorop" name="check-button" switch>
                         Afficher la choroplèthe
                     </b-form-checkbox>
-                    
+
+                    <!-- creation d'un checkbox pour masquer ou afficher la section associée à la recherche de centres de vaccination  -->
                     <b-form-checkbox v-model="checked" name="check-button" switch>
                         Trouver les centres de vaccination
                     </b-form-checkbox>
@@ -64,7 +79,7 @@
                         cols="12"
                         sm="10"
                     >
-
+                    <!-- Créer une entrée (barre de recherche) pour faire des recherche par code postal-->
                     <vue-bootstrap-typeahead 
                     ref="inputAutocomplete"
                     v-model="zipCode"
@@ -73,15 +88,18 @@
                     placeholder="67000..."
                     />
 
+                    <!-- Créer un bouton pour valider la recherche -->
                     <b-button rounded id="search_botton" @click="checkInput" class="mb-2" variant="outline-primary">
                         <b-icon icon="search" ></b-icon>
                     </b-button>
-
+                    
+                    <!-- Créer un bouton pour supprimer les marqueurs sur la carte et vider la barre de recherche  -->
                     <b-button rounded id="delete_botton" @click="deleteMarkers" class="mb-2" variant="outline-danger">
                         <b-icon icon="trash" ></b-icon>
                     </b-button>
 
                     </v-col><br>
+                    <!-- Ajouter une liste d'informations liées au centre de vaccination qui s'affichera après un clic sur le marqueur -->
                     <b-list-group v-if="showMarkerInfo == true">
                         <b-list-group-item class="text-center" variant="primary" button> 
                             <strong > {{infoMarker.c_nom}} </strong>
@@ -110,7 +128,7 @@
                     </div>  
                 </template>
             </b-sidebar>
-
+            <!-- ajouter trois buttons: revenir à la page d'accueil, réinitialisation de vue et afficher le panneau (sidebar) -->
             <v-btn
                 class="mx-2"
                 fab
@@ -154,23 +172,25 @@
 </template>
 
 <script>
+//importation des composantes de la choroplèthe
 import { InfoControl, ReferenceChart, ChoroplethLayer } from 'vue-choropleth'
 
-import L from 'leaflet';
-
+//Chargement des fichiers js et json nécessaires à la réalisation de la carte choroplèthe et à l'apparition des marqueurs--> 
 import frRegionGeojson from '../data/france-regions.json'
 import frDepartmentGeojson from '../data/france-departments.json'
 import { frRegionData } from '../data/france-regions-data'
 import { frDepartmentData } from '../data/france-departments-data'
 import frCentresVax from '../data/centres-vaccination.json'
 
+//Importation tous les composants de leaflet dont nous avons besoin 
+import L from 'leaflet';
 import { LMap, LPopup, LMarker, LTileLayer, LControlLayers, LControlScale } from 'vue2-leaflet';
 
 export default {
     name: "Map",
     data: function() {
         return {
-            
+            // Initialiser/Définir/Déclarer les variables appelées dans la section template en haut 
             frRegionData,
             frDepartmentData,
             frRegionGeojson,
@@ -237,6 +257,7 @@ export default {
 
         this.$nextTick(() => {
 
+            // Appel de la fonction qui réinitialise la vue de la carte lorsque la page de la carte vient d'être chargée 
             this.resetView();
 
         });
@@ -244,7 +265,22 @@ export default {
     }, //mounted
 
     methods: {
+        // partie choroplethe
+        //la fonction qui permet la récupération de données Covid soit pour une région soit un département selon le choix choisi par l'utilisateur 
+        getData(){
+            if (this.selected == 'region' ){ this.placeholderchoro = 'Passez la souris sur une région' ; return this.frRegionData }
+            if (this.selected == 'department' ){ this.placeholderchoro = 'Passez la souris sur un département'; return this.frDepartmentData }
+        },
 
+        //Récupérer la couche geojson (région ou département) correspondant au choix fait par l'utilisateur
+        getGeojson(){
+            if (this.selected == 'region' ){ return this.frRegionGeojson }
+            if (this.selected == 'department' ){ return this.frDepartmentGeojson }
+        },
+
+
+        // partie marqueures
+        //supprimer les marqueurs précédemment affichés sur la carte une fois que l'utilisateur a effectué une nouvelle recherche 
         deleteMarkers(){
             this.vaxMarkers = [];
             this.zipCode = '';
@@ -252,14 +288,15 @@ export default {
             this.showMarkerInfo = false
         },
 
+        //Récupérer les données correspondant au marqueur sur lequel on a cliqué pour l'afficher dans la liste d'informations
         setInfoMarker(marker){
             this.infoMarker = this.frCentresVax.features[marker.id].properties;
             this.showMarkerInfo = true;
             this.showSidebar()
             if(this.infoMarker.c_rdv == true){this.bool = 'Oui'}else{this.bool = 'Non'}
-            console.log(this.infoMarker)
         },
 
+        //récupérer le code postal d'après le fichier de données pour faire des propositions en fonction de la valeur saisie. 
         getSuggestedZipCode(){
             var data = this.frCentresVax.features
             for (let i = 0; i < data.length; i++){
@@ -268,6 +305,7 @@ export default {
             this.SuggestedZipCode = [ ...new Set(this.SuggestedZipCode) ]; 
         },
 
+        //vérifier la valeur saisie avec les valeurs correspondantes dans le fichier de données puis nous stockons leurs coordonnées dans le tableau des marqueurs qui s'affichera.
         checkInput(){
             this.vaxMarkers = []
             this.showMarkerInfo = false;
@@ -290,33 +328,25 @@ export default {
             this.$refs.mymap.mapObject.fitBounds(group.getBounds(), { padding: [20, 20] });
         },
 
-        getData(){
-            if (this.selected == 'region' ){ this.placeholderchoro = 'Passez la souris sur une région' ; return this.frRegionData }
-            if (this.selected == 'department' ){ this.placeholderchoro = 'Passez la souris sur un département'; return this.frDepartmentData }
-        },
-        getGeojson(){
-            if (this.selected == 'region' ){ return this.frRegionGeojson }
-            if (this.selected == 'department' ){ return this.frDepartmentGeojson }
-        },
+        
+        // les autres
+        //réinitialisation de vue de la carte 
         resetView(){
-
             this.$refs.mymap.mapObject.setView([46.71109, 1.7191036], 6.35);
-
         },
 
+        // La fonction qui affiche le panneau par un clic du bouton avec l'icône de clé 
         showSidebar() {
-
             this.active = true
         },
 
+        // La fonction qui ferme le panneau par un clic sur le bouton de Fermer 
         closeSidebar(){
-
             this.active = false
-            //this.resetView()
         },
 
+        // la fonction qui permet de revenir à la page d'accueil
         goHome(){
-            
             this.$router.push({ path: '/' });
         }
     }
@@ -326,7 +356,7 @@ export default {
 </script>
 
 
-<!--  style  -->
+<!--  style  -->   <!-- Définition le style de la carte, y compris leaflet et les boutons, on a utilisé bootstrap et vuetify pour facilite le travail du style -->
 
 <style scoped>
 

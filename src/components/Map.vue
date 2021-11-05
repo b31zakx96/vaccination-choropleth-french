@@ -1,11 +1,11 @@
 <template>
-<!-- difinir une zone sur l'écran pour placer la carte -->
+<!-- Difinir une zone sur l'écran pour placer la carte -->
         <div class="map">  
 
-            <!-- initialisation de la carte et définition des coordonnées et du zoom de lancement -->
+            <!-- Initialisation de la carte et définition des coordonnées et du zoom de lancement -->
             <l-map ref="mymap" :center="[46.71109, 1.7191036]" :zoom="6" :minZoom="6" :options="mapOptions" >
 
-                <!-- ajouter l'echelle sur la carte -->
+                <!-- Ajouter l'echelle sur la carte -->
                 <l-control-scale position="bottomleft" :imperial="true" :metric="true"></l-control-scale>
 
                 <!-- Ajouter le fond de carte (les tuiles openstreetmap) -->
@@ -30,7 +30,7 @@
                     </template>
                 </l-choropleth-layer>
 
-                <!-- ajouter les marqueurs sur la carte --> 
+                <!-- Ajouter les marqueurs sur la carte --> 
                 <l-marker   
                     :key="index" 
                     v-for="(vaxMarker, index) in vaxMarkers" 
@@ -46,7 +46,7 @@
 
             </l-map>
                 
-            <!-- creation d'un panneau latérale (sidebar) à travers lequel nous contrôlons la carte et  il contiendra des informations sur le centres -->
+            <!-- Création d'un panneau latérale (sidebar) à travers lequel nous contrôlons la carte et  il contiendra des informations sur le centres -->
             <b-sidebar width="380px" v-model="active" id="sidebar-no-header"  title="COVID-19 l Vaccination Infos" shadow>
                 <div class="p-3">
                     <p><b>Sélectionnez une option pour l'affichage de choroplèthe :</b></p> 
@@ -59,12 +59,12 @@
                     <b-form-select v-model="selected" :options="options"></b-form-select>
                     </v-col><br>
 
-                    <!-- creation d'un checkbox pour masquer ou afficher la choroplethe -->
+                    <!-- Création d'un checkbox pour masquer ou afficher la choroplethe -->
                     <b-form-checkbox v-model="checkedChorop" name="check-button" switch>
                         Afficher la choroplèthe
                     </b-form-checkbox>
 
-                    <!-- creation d'un checkbox pour masquer ou afficher la section associée à la recherche de centres de vaccination  -->
+                    <!-- Création d'un checkbox pour masquer ou afficher la section associée à la recherche de centres de vaccination  -->
                     <b-form-checkbox v-model="checked" name="check-button" switch>
                         Trouver les centres de vaccination
                     </b-form-checkbox>

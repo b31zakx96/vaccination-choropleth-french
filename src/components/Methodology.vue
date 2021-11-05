@@ -1,4 +1,4 @@
-<!-- page simple juste du texte -->
+<!-- Une page ne contient que du texte  -->
 
 <template>
 <div>

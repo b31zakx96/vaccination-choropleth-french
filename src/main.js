@@ -6,7 +6,7 @@ import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 
-//importer vue-router pour faire les routes entre nos page
+//importer vue-router pour faire les routes entre nos pages
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
